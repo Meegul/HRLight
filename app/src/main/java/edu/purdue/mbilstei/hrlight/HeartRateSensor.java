@@ -17,7 +17,7 @@ public class HeartRateSensor {
     TextView lightText;
     TextView BPMText;
     HeartRateRunnable runObj;
-    public HeartRateSensor(SensorManager sm, TextView lightText, TextView BPMText) {
+    public HeartRateSensor(TextView lightText, TextView BPMText) {
         this.lightText = lightText;
         this.BPMText = BPMText;
         numRegistered = 0;
@@ -31,15 +31,15 @@ public class HeartRateSensor {
     public void calcCurrentBPM() {
         //This method is intended to run every 10 seconds.
         //It will not function properly if it is run more or less often.
-        if (currentMin < 4)
+        if (currentMax < 8)
             BPM =  numRegistered * 10;
-        if (currentMin < 8)
+        if (currentMax < 10)
             BPM = numRegistered * 8;
         else BPM = numRegistered * 6;
     }
 
     public void resetBPMText() {
-        BPMText.setText("Current BPM: 0");
+        BPMText.setText("0");
     }
 
     public void setCurrentLight(float light) {
@@ -52,20 +52,23 @@ public class HeartRateSensor {
     }
 
     public void updateBPMText() {
-        BPMText.setText("Current BPM: " + BPM);
+        BPMText.setText("" + (int) BPM);
     }
 
     public double getNumRegistered() {
         return numRegistered;
     }
 
-    public void updateRegistered() {
+    public boolean updateRegistered() {
         if (currentLight > currentMax)
             currentMax = currentLight;
         if (currentLight < currentMin)
             currentMin = currentLight;
-        if (Math.abs(currentLight - currentMax) <= 2 && currentMax >= 2)
+        if (Math.abs(currentLight - currentMax) <= 2 && currentMax >= 2) {
             numRegistered++;
+            return true;
+        }
+        return false;
     }
 
     public void resetMax() {

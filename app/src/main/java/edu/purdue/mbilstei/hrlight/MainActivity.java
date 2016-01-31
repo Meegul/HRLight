@@ -1,13 +1,15 @@
 package edu.purdue.mbilstei.hrlight;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorEventListener2;
 import android.hardware.SensorManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,10 +30,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Context context = getApplicationContext();
-        CharSequence text = "This started!";
-        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-        toast.show();
         lightData = 0;
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         lightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -40,13 +38,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         lightLevelText = (TextView) findViewById(R.id.lightLevelText);
         lightCounterText = (TextView) findViewById(R.id.lightCounter);
         currentMaxText = (TextView) findViewById(R.id.currentMax);
-        hr = new HeartRateSensor(mSensorManager, lightLevelText, BPMText);
+        hr = new HeartRateSensor(lightLevelText, BPMText);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hr.resetMax();
+                Intent intent = new Intent(v.getContext(), ZoomActivity.class);
+                startActivity(intent);
             }
         });
+
     }
 
     protected void onResume() {
@@ -64,10 +65,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public void onSensorChanged(SensorEvent event) {
         hr.setCurrentLight(event.values[0]);
-        hr.updateRegistered();
+        if (hr.updateRegistered())
+        //    beatHeart(findViewById(R.id.heartView));
         hr.updateBPMText();
         lightCounterText.setText("Times Registered: " + hr.getNumRegistered());
         currentMaxText.setText("Current Max: " + hr.getCurrentMax());
+
+    }
+
+    public void beatHeart(View v) {
+        Intent intent = new Intent(v.getContext(), ZoomActivity.class);
+        startActivity(intent);
     }
 
 }
