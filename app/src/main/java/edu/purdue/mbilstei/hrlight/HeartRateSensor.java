@@ -1,6 +1,5 @@
 package edu.purdue.mbilstei.hrlight;
 
-import android.hardware.SensorManager;
 import android.text.format.Time;
 import android.widget.TextView;
 

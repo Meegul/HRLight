@@ -1,19 +1,15 @@
 package edu.purdue.mbilstei.hrlight;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorEventListener2;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
@@ -43,8 +39,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onClick(View v) {
                 hr.resetMax();
-                Intent intent = new Intent(v.getContext(), ZoomActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(v.getContext(), ZoomActivity.class);
+                //startActivity(intent);
             }
         });
 
